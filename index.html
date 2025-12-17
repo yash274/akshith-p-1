@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Linear Regression and Gradient Descent: A Research-Oriented, Geometric, and Systems Perspective</title>
+  <title>Linear Regression and Gradient Descent</title>
 
   <!-- MathJax -->
   <script>
@@ -21,6 +21,7 @@
       --rule:#e5e7eb;
       --code:#0b1220;
     }
+
     body{
       margin:0;
       font-family:"Georgia","Times New Roman",serif;
@@ -28,15 +29,36 @@
       color:var(--ink);
       line-height:2.0;
     }
-    .container{max-width:980px;margin:auto;padding:48px 24px 96px}
-    h1,h2,h3,h4{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:-0.015em}
-    h1{font-size:clamp(34px,4vw,42px);margin-bottom:14px}
-    h2{font-size:clamp(26px,3.5vw,30px);margin-top:80px;border-bottom:3px solid var(--accent-soft);padding-bottom:10px;color:var(--accent)}
-    h3{font-size:21px;margin-top:44px;color:#1f2937}
-    h4{font-size:18px;margin-top:30px;color:#374151}
-    p{text-align:justify;font-size:18px;margin:22px 0}
-    ul,ol{margin:22px 0 22px 32px}
-    li{margin:12px 0;font-size:17px}
+
+    .container{
+      max-width:980px;
+      margin:auto;
+      padding:48px 24px 96px;
+    }
+
+    h1,h2,h3,h4{
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+      letter-spacing:-0.015em;
+    }
+
+    h1{
+      font-size:clamp(34px,4vw,42px);
+      margin-bottom:14px;
+    }
+
+    h2{
+      font-size:clamp(26px,3.5vw,30px);
+      margin-top:80px;
+      border-bottom:3px solid var(--accent-soft);
+      padding-bottom:10px;
+      color:var(--accent);
+    }
+
+    p{
+      text-align:justify;
+      font-size:18px;
+      margin:22px 0;
+    }
 
     .equation{
       background:#fcfcfd;
@@ -44,14 +66,6 @@
       padding:22px 26px;
       margin:34px 0;
       overflow-x:auto;
-      font-size:17px;
-    }
-
-    .note{
-      background:var(--accent-soft);
-      padding:22px 26px;
-      margin:40px 0;
-      border-radius:8px;
       font-size:17px;
     }
 
@@ -66,197 +80,98 @@
       margin:40px 0;
     }
 
-    svg{display:block;margin:56px auto 14px;max-width:100%;height:auto}
-    .caption{font-size:15px;color:var(--ink-muted);text-align:center;margin-bottom:44px}
+    table{
+      border-collapse:collapse;
+      width:100%;
+      margin:40px 0;
+    }
 
-    footer{margin-top:120px;border-top:1px solid var(--rule);padding-top:24px;font-size:15px;color:var(--ink-muted)}
+    th,td{
+      border:1px solid var(--rule);
+      padding:12px;
+      text-align:center;
+    }
+
+    th{
+      background:var(--accent-soft);
+    }
+
+    /* Figure styling */
+    .figure{
+      margin:56px auto 44px;
+      text-align:center;
+    }
+
+    .figure img{
+      max-width:100%;
+      height:auto;
+      border-radius:6px;
+      box-shadow:0 12px 30px rgba(0,0,0,0.12);
+    }
+
+    .figure .caption{
+      font-size:15px;
+      color:var(--ink-muted);
+      margin-top:14px;
+      line-height:1.7;
+    }
+
+    footer{
+      margin-top:120px;
+      border-top:1px solid var(--rule);
+      padding-top:24px;
+      font-size:15px;
+      color:var(--ink-muted);
+    }
   </style>
 </head>
+
 <body>
 <div class="container">
 
 <h1>Linear Regression and Gradient Descent</h1>
-<p><em>A research-oriented exposition connecting statistical modeling, geometry of error surfaces, optimization theory, and real-world machine learning systems.</em></p>
+<p><em>A research-oriented exposition connecting geometry, optimization, and learning dynamics.</em></p>
 
-<h2>1. Introduction and Historical Context</h2>
+<h2>6. Gradient Descent Dynamics on a One-Dimensional Cost Function</h2>
+
 <p>
-Linear regression is among the oldest techniques in statistics, with origins tracing back to
-Legendre (1805) and Gauss (1809). Despite its age, it remains foundational in modern machine
-learning because it formalizes the core learning paradigm: representing hypotheses as
-parameterized functions and selecting parameters by minimizing a well-defined loss.
-</p>
-<p>
-Many contemporary algorithms—including logistic regression, support vector machines, and
-even deep neural networks—can be viewed as extensions or generalizations of linear regression
-under different loss functions and hypothesis spaces. Consequently, a deep understanding of
-linear regression and gradient descent provides conceptual clarity that extends far beyond
-this single model.
+Gradient descent is a first-order optimization method that minimizes a differentiable
+objective by iteratively moving parameters in the direction opposite to the gradient,
+which locally represents the steepest ascent of the cost function.
 </p>
 
-<h2>2. Problem Formulation and Statistical Assumptions</h2>
+<div class="equation">
+$$
+\theta^{(t+1)} = \theta^{(t)} - \alpha \nabla J(\theta^{(t)})
+$$
+</div>
+
 <p>
-Given a dataset $\{(x_i, y_i)\}_{i=1}^m$ with $x_i \in \mathbb{R}$ and $y_i \in \mathbb{R}$,
-linear regression assumes that the conditional expectation of $y$ given $x$ is a linear
-function of $x$:
+The learning rate $\alpha$ determines the step size of each update. If $\alpha$ is too
+small, convergence becomes slow; if it is too large, the algorithm may overshoot the
+minimum or diverge.
 </p>
 
-<div class="equation">$$\mathbb{E}[y \mid x] = \theta_0 + \theta_1 x$$</div>
+<div class="figure">
+  <img
+    src="gradient-descent-1d-cost.png"
+    alt="Gradient descent on a one-dimensional cost function"
+  />
+  <div class="caption">
+    Gradient descent on a one-dimensional cost function $J(w)$. Starting from an initial
+    weight, the parameter $w$ is iteratively updated in the direction opposite to the
+    gradient (shown by the dashed tangent). The update steps move downhill along the cost
+    curve toward the global minimum $J_{\min}(w)$. An excessively large learning rate
+    $\alpha$ can cause overshooting, while a smaller $\alpha$ ensures stable but slower
+    convergence.
+  </div>
+</div>
 
+<h2>Conclusion</h2>
 <p>
-This assumption does not require the data itself to lie perfectly on a line; rather, it
-assumes that deviations from linearity can be modeled as random noise. Under the additional
-assumption of Gaussian noise with zero mean and constant variance, minimizing mean squared
-error corresponds to maximum likelihood estimation.
-</p>
-
-<h2>3. Hypothesis Space and Model Expressiveness</h2>
-<p>
-The hypothesis space of simple linear regression consists of all affine functions of one
-variable. Each hypothesis corresponds to a point in parameter space $(\theta_0, \theta_1)$.
-Learning therefore becomes a search problem over this continuous, two-dimensional space.
-</p>
-
-<h2>4. Input-Space Geometry</h2>
-<p>
-In the input space, each training example appears as a point in the $(x, y)$ plane. A
-candidate hypothesis defines a line whose vertical deviations from these points constitute
-the prediction error. The goal of learning is not merely to pass through points, but to
-balance errors across the dataset in a statistically principled manner.
-</p>
-
-<svg viewBox="0 0 520 340">
-  <!-- Axes -->
-  <line x1="70" y1="280" x2="480" y2="280" stroke="#111" stroke-width="2" />
-  <line x1="70" y1="280" x2="70" y2="50" stroke="#111" stroke-width="2" />
-  <text x="480" y="310" font-size="15">x</text>
-  <text x="35" y="50" font-size="15">y</text>
-
-  <!-- Points -->
-  <circle cx="130" cy="230" r="5" fill="#2563eb" />
-  <circle cx="190" cy="205" r="5" fill="#2563eb" />
-  <circle cx="250" cy="180" r="5" fill="#2563eb" />
-  <circle cx="310" cy="155" r="5" fill="#2563eb" />
-  <circle cx="370" cy="140" r="5" fill="#2563eb" />
-
-  <!-- Line -->
-  <line x1="90" y1="260" x2="470" y2="110" stroke="#dc2626" stroke-width="3" />
-</svg>
-<p class="caption">Observed data in input space with a fitted linear regression hypothesis.</p>
-
-<h2>5. Cost Function and Risk Minimization</h2>
-<p>
-To formalize learning, we define a cost function that measures empirical risk—the average
-loss incurred by a hypothesis on the training data. For linear regression, the canonical
-choice is the Mean Squared Error (MSE):
-</p>
-
-<div class="equation">$$J(\theta_0, \theta_1) = \frac{1}{2m} \sum_{i=1}^{m} (\theta_0 + \theta_1 x_i - y_i)^2$$</div>
-
-<p>
-The factor $\tfrac{1}{2}$ is included for mathematical convenience, simplifying derivatives
-without affecting the location of the minimum. Crucially, $J$ is a convex function of the
-parameters, ensuring the absence of local minima.
-</p>
-
-<h2>6. Geometry of the Cost Surface</h2>
-<p>
-Viewed in parameter space, the cost function defines a paraboloid. Each contour line
-represents a set of parameter values yielding equal error. The unique global minimum
-corresponds to the optimal regression coefficients.
-</p>
-
-<svg viewBox="0 0 520 340">
-  <line x1="70" y1="280" x2="480" y2="280" stroke="#111" stroke-width="2" />
-  <line x1="70" y1="280" x2="70" y2="50" stroke="#111" stroke-width="2" />
-  <text x="480" y="310" font-size="15">θ₁</text>
-  <text x="10" y="50" font-size="15">J(θ)</text>
-
-  <ellipse cx="275" cy="190" rx="150" ry="80" fill="none" stroke="#93c5fd" stroke-width="2" />
-  <ellipse cx="275" cy="190" rx="100" ry="55" fill="none" stroke="#60a5fa" stroke-width="2" />
-  <ellipse cx="275" cy="190" rx="50" ry="28" fill="none" stroke="#2563eb" stroke-width="2" />
-  <circle cx="275" cy="190" r="5" fill="#dc2626" />
-</svg>
-<p class="caption">Contour representation of the MSE cost surface showing convexity and a unique minimum.</p>
-
-<h2>7. Gradient Descent as an Optimization Algorithm</h2>
-<p>
-Gradient descent is a first-order iterative method for minimizing differentiable functions.
-At each iteration, parameters are updated in the direction opposite to the gradient of the
-cost function, which locally indicates the steepest increase.
-</p>
-
-<div class="equation">$$\theta^{(t+1)} = \theta^{(t)} - \alpha \nabla J(\theta^{(t)})$$</div>
-
-<p>
-The learning rate $\alpha$ controls the trade-off between convergence speed and stability.
-For convex quadratic objectives such as MSE, convergence is guaranteed when $\alpha$ lies
-within a specific range determined by the curvature of the cost surface.
-</p>
-
-<h2>8. Deriving the Update Rules</h2>
-<p>
-For linear regression, the gradient of the cost function can be computed analytically:
-</p>
-
-<div class="equation">$$\frac{\partial J}{\partial \theta_0} = \frac{1}{m} \sum_{i=1}^{m} (h_\theta(x_i) - y_i)$$</div>
-<div class="equation">$$\frac{\partial J}{\partial \theta_1} = \frac{1}{m} \sum_{i=1}^{m} (h_\theta(x_i) - y_i)x_i$$</div>
-
-<p>
-These expressions reveal that learning is driven by correlation between prediction error
-and the input variable.
-</p>
-
-<h2>9. Algorithmic Implementation</h2>
-<pre><code>Initialize θ₀, θ₁
-Repeat until convergence:
-    Compute predictions hθ(x)
-    Compute errors (hθ(x) − y)
-    Compute gradients using dataset averages
-    Update parameters using learning rate α
-</code></pre>
-
-<h2>10. Reference Python Implementation</h2>
-<p>
-The following implementation mirrors the mathematical derivation exactly and is suitable
-for educational and experimental use:
-</p>
-
-<pre><code>import numpy as np
-
-# Dataset
-X = np.array([1, 2, 3, 4, 5], dtype=float)
-y = np.array([2, 4, 5, 4, 5], dtype=float)
-m = len(X)
-
-# Hyperparameters
-alpha = 0.01
-theta_0, theta_1 = 0.0, 0.0
-
-# Gradient Descent
-for iteration in range(1000):
-    predictions = theta_0 + theta_1 * X
-    errors = predictions - y
-
-    grad_theta_0 = (1/m) * np.sum(errors)
-    grad_theta_1 = (1/m) * np.sum(errors * X)
-
-    theta_0 -= alpha * grad_theta_0
-    theta_1 -= alpha * grad_theta_1
-</code></pre>
-
-<h2>11. Practical and Systems-Level Considerations</h2>
-<ul>
-  <li>Feature scaling reduces ill-conditioning and accelerates convergence</li>
-  <li>Batch, stochastic, and mini-batch variants trade accuracy for speed</li>
-  <li>Closed-form solutions exist but scale poorly in high dimensions</li>
-</ul>
-
-<h2>12. Conclusion</h2>
-<p>
-Linear regression and gradient descent together provide a mathematically transparent
-instance of learning as optimization. The geometric and algorithmic principles explored
-here recur throughout modern machine learning, making this model an essential conceptual
-benchmark rather than a historical curiosity.
+This geometric interpretation of gradient descent provides intuition that generalizes
+directly to higher-dimensional parameter spaces, forming the conceptual foundation for
+optimization in modern machine learning systems.
 </p>
 
 <footer>
