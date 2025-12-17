@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Maximum Margin Hyperplane in SVM — Advanced Project Report</title>
+  <title>Linear Regression and Gradient Descent: A Research-Oriented, Geometric, and Systems Perspective</title>
 
-  <!-- MathJax for equations -->
+  <!-- MathJax -->
   <script>
     MathJax = { tex: { inlineMath: [['$','$'], ['\\(','\\)']] } };
   </script>
@@ -16,493 +16,253 @@
       --ink:#0b1220;
       --ink-muted:#4b5563;
       --accent:#1a3a6e;
-      --bg:#f8fafc;
-      --card:#ffffff;
+      --accent-soft:#e8eff8;
+      --bg:#f9fafb;
       --rule:#e5e7eb;
+      --code:#0b1220;
     }
-    *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: "Georgia", "Times New Roman", serif;
+      font-family:"Georgia","Times New Roman",serif;
       background:var(--bg);
       color:var(--ink);
-      line-height:1.85;
+      line-height:2.0;
     }
-    .container{
-      max-width:820px;
-      margin:auto;
-      padding:24px 18px 40px;
-    }
-    h1,h2,h3,h4{
-      font-family:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-      letter-spacing:-0.01em;
-    }
-    h1{
-      font-size:clamp(26px,4vw,34px);
-      margin-bottom:6px;
-    }
-    h2{
-      font-size:clamp(20px,3.5vw,24px);
-      margin-top:32px;
-      margin-bottom:12px;
-      border-bottom:1px solid var(--rule);
-      padding-bottom:6px;
-      color:var(--accent);
-    }
-    h3{
-      font-size:18px;
-      margin-top:22px;
-      margin-bottom:6px;
-      color:#1f2937;
-    }
-    p{
-      font-size:16px;
-      margin:10px 0;
-      text-align:justify;
-      hyphens:auto;
-    }
-    ul,ol{
-      margin:10px 0 10px 24px;
-    }
-    li{font-size:15px;margin:6px 0}
-
-    .card{
-      background:var(--card);
-      padding:22px 26px;
-      margin-top:22px;
-      border-radius:0;
-      box-shadow:none;
-      border:1px solid var(--rule);
-    }
+    .container{max-width:980px;margin:auto;padding:48px 24px 96px}
+    h1,h2,h3,h4{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:-0.015em}
+    h1{font-size:clamp(34px,4vw,42px);margin-bottom:14px}
+    h2{font-size:clamp(26px,3.5vw,30px);margin-top:80px;border-bottom:3px solid var(--accent-soft);padding-bottom:10px;color:var(--accent)}
+    h3{font-size:21px;margin-top:44px;color:#1f2937}
+    h4{font-size:18px;margin-top:30px;color:#374151}
+    p{text-align:justify;font-size:18px;margin:22px 0}
+    ul,ol{margin:22px 0 22px 32px}
+    li{margin:12px 0;font-size:17px}
 
     .equation{
-      background:#fbfbfd;
-      border:1px solid var(--rule);
-      padding:14px;
-      margin:14px 0;
+      background:#fcfcfd;
+      border-left:6px solid var(--accent);
+      padding:22px 26px;
+      margin:34px 0;
       overflow-x:auto;
-      font-size:15px;
+      font-size:17px;
     }
 
     .note{
-      border-left:4px solid var(--accent);
-      background:#fbfcfe;
-      padding:14px 18px;
-      margin:18px 0;
-      font-size:15px;
-    }
-
-    svg{
-      display:block;
-      margin:22px auto 10px;
-      max-width:100%;
-      height:auto;
-    }
-
-    .caption{
-      font-size:13px;
-      color:var(--ink-muted);
-      text-align:center;
-      margin-bottom:18px;
+      background:var(--accent-soft);
+      padding:22px 26px;
+      margin:40px 0;
+      border-radius:8px;
+      font-size:17px;
     }
 
     pre{
-      background:#0b1220;
+      background:var(--code);
       color:#e5e7eb;
-      padding:16px;
-      font-size:14px;
-      overflow-x:auto;
-      margin:16px 0;
-    }
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-      margin:16px 0;
+      padding:26px;
       font-size:15px;
-    }
-    th,td{
-      border:1px solid var(--rule);
-      padding:8px 10px;
-      text-align:left;
-    }
-    th{
-      background:#f1f5f9;
-      font-weight:600;
+      line-height:1.8;
+      overflow-x:auto;
+      border-radius:8px;
+      margin:40px 0;
     }
 
-    footer{
-      margin-top:36px;
-      padding-top:12px;
-      border-top:1px solid var(--rule);
-      font-size:14px;
-      color:var(--ink-muted);
-      text-align:center;
-    }
-</style>
+    svg{display:block;margin:56px auto 14px;max-width:100%;height:auto}
+    .caption{font-size:15px;color:var(--ink-muted);text-align:center;margin-bottom:44px}
+
+    footer{margin-top:120px;border-top:1px solid var(--rule);padding-top:24px;font-size:15px;color:var(--ink-muted)}
+  </style>
 </head>
 <body>
 <div class="container">
 
+<h1>Linear Regression and Gradient Descent</h1>
+<p><em>A research-oriented exposition connecting statistical modeling, geometry of error surfaces, optimization theory, and real-world machine learning systems.</em></p>
 
+<h2>1. Introduction and Historical Context</h2>
+<p>
+Linear regression is among the oldest techniques in statistics, with origins tracing back to
+Legendre (1805) and Gauss (1809). Despite its age, it remains foundational in modern machine
+learning because it formalizes the core learning paradigm: representing hypotheses as
+parameterized functions and selecting parameters by minimizing a well-defined loss.
+</p>
+<p>
+Many contemporary algorithms—including logistic regression, support vector machines, and
+even deep neural networks—can be viewed as extensions or generalizations of linear regression
+under different loss functions and hypothesis spaces. Consequently, a deep understanding of
+linear regression and gradient descent provides conceptual clarity that extends far beyond
+this single model.
+</p>
 
-<div class="card">
-  <h2>Abstract</h2>
-  <p>
-    Support Vector Machines (SVMs) are among the most mathematically grounded machine
-    learning algorithms. The central idea of SVM is the construction of a <strong>Maximum Margin Hyperplane</strong>,
-    which separates classes while maximizing robustness to noise and unseen data.
-    This project provides a deep exploration of the theory behind margin maximization,
-    including convex optimization, duality, KKT conditions, kernel methods, and
-    practical training algorithms such as Sequential Minimal Optimization (SMO).
-  </p>
-</div>
+<h2>2. Problem Formulation and Statistical Assumptions</h2>
+<p>
+Given a dataset $\{(x_i, y_i)\}_{i=1}^m$ with $x_i \in \mathbb{R}$ and $y_i \in \mathbb{R}$,
+linear regression assumes that the conditional expectation of $y$ given $x$ is a linear
+function of $x$:
+</p>
 
-<div class="card">
-  <h2>Introduction</h2>
-  <p>
-    Classification algorithms attempt to learn decision boundaries that generalize well
-    to unseen data. Among these, SVMs stand out because they explicitly maximize the
-    geometric margin between classes.
-  </p>
-  <p>
-    <strong>Who benefits:</strong> This project is intended for students and practitioners who want a
-    rigorous understanding of why SVM works, not just how to use it.
-  </p>
-  <p>
-    <strong>Project Goal:</strong> To mathematically derive, visualize, and implement the maximum margin
-    principle and evaluate its impact on classification performance.
-  </p>
-</div>
+<div class="equation">$$\mathbb{E}[y \mid x] = \theta_0 + \theta_1 x$$</div>
 
-<div class="card">
-  <h2>Geometric Intuition of Maximum Margin</h2>
+<p>
+This assumption does not require the data itself to lie perfectly on a line; rather, it
+assumes that deviations from linearity can be modeled as random noise. Under the additional
+assumption of Gaussian noise with zero mean and constant variance, minimizing mean squared
+error corresponds to maximum likelihood estimation.
+</p>
 
-  <svg viewBox="0 0 420 260">
-    <defs>
-      <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
-        <path d="M0,0 L0,6 L9,3 z" fill="#0f4c81" />
-      </marker>
-    </defs>
+<h2>3. Hypothesis Space and Model Expressiveness</h2>
+<p>
+The hypothesis space of simple linear regression consists of all affine functions of one
+variable. Each hypothesis corresponds to a point in parameter space $(\theta_0, \theta_1)$.
+Learning therefore becomes a search problem over this continuous, two-dimensional space.
+</p>
 
-    <!-- Margin lines -->
-    <line x1="60" y1="220" x2="360" y2="40" stroke="#1b6fbf" stroke-dasharray="6 4" />
-    <line x1="90" y1="220" x2="390" y2="40" stroke="#1b6fbf" stroke-dasharray="6 4" />
+<h2>4. Input-Space Geometry</h2>
+<p>
+In the input space, each training example appears as a point in the $(x, y)$ plane. A
+candidate hypothesis defines a line whose vertical deviations from these points constitute
+the prediction error. The goal of learning is not merely to pass through points, but to
+balance errors across the dataset in a statistically principled manner.
+</p>
 
-    <!-- Decision boundary -->
-    <line x1="75" y1="220" x2="375" y2="40" stroke="#e11d48" stroke-width="3" />
+<svg viewBox="0 0 520 340">
+  <!-- Axes -->
+  <line x1="70" y1="280" x2="480" y2="280" stroke="#111" stroke-width="2" />
+  <line x1="70" y1="280" x2="70" y2="50" stroke="#111" stroke-width="2" />
+  <text x="480" y="310" font-size="15">x</text>
+  <text x="35" y="50" font-size="15">y</text>
 
-    <!-- Points class +1 -->
-    <circle cx="110" cy="170" r="6" fill="#16a34a" />
-    <circle cx="140" cy="150" r="6" fill="#16a34a" />
-    <circle cx="160" cy="180" r="6" fill="#16a34a" />
+  <!-- Points -->
+  <circle cx="130" cy="230" r="5" fill="#2563eb" />
+  <circle cx="190" cy="205" r="5" fill="#2563eb" />
+  <circle cx="250" cy="180" r="5" fill="#2563eb" />
+  <circle cx="310" cy="155" r="5" fill="#2563eb" />
+  <circle cx="370" cy="140" r="5" fill="#2563eb" />
 
-    <!-- Points class -1 -->
-    <circle cx="260" cy="90" r="6" fill="#7c3aed" />
-    <circle cx="290" cy="70" r="6" fill="#7c3aed" />
-    <circle cx="310" cy="100" r="6" fill="#7c3aed" />
+  <!-- Line -->
+  <line x1="90" y1="260" x2="470" y2="110" stroke="#dc2626" stroke-width="3" />
+</svg>
+<p class="caption">Observed data in input space with a fitted linear regression hypothesis.</p>
 
-    <!-- Margin arrow -->
-    <line x1="150" y1="140" x2="210" y2="120" stroke="#0f4c81" stroke-width="2" marker-end="url(#arrow)" />
-    <text x="160" y="120" font-size="12">Margin</text>
-  </svg>
+<h2>5. Cost Function and Risk Minimization</h2>
+<p>
+To formalize learning, we define a cost function that measures empirical risk—the average
+loss incurred by a hypothesis on the training data. For linear regression, the canonical
+choice is the Mean Squared Error (MSE):
+</p>
 
-  <p class="caption">
-    The optimal hyperplane (red) maximizes the distance to the nearest data points
-    (support vectors). Dashed lines represent the margin boundaries.
-  </p>
+<div class="equation">$$J(\theta_0, \theta_1) = \frac{1}{2m} \sum_{i=1}^{m} (\theta_0 + \theta_1 x_i - y_i)^2$$</div>
 
-  <p>
-    Intuitively, a larger margin implies higher confidence in classification and better
-    generalization. This geometric property is the key reason why SVMs are resistant to
-    overfitting.
-  </p>
-</div>
+<p>
+The factor $\tfrac{1}{2}$ is included for mathematical convenience, simplifying derivatives
+without affecting the location of the minimum. Crucially, $J$ is a convex function of the
+parameters, ensuring the absence of local minima.
+</p>
 
-<div class="card">
-  <h2>Mathematical Formulation (Hard Margin SVM)</h2>
+<h2>6. Geometry of the Cost Surface</h2>
+<p>
+Viewed in parameter space, the cost function defines a paraboloid. Each contour line
+represents a set of parameter values yielding equal error. The unique global minimum
+corresponds to the optimal regression coefficients.
+</p>
 
-  <p>
-    Given training data $\{(x_i, y_i)\}_{i=1}^n$, where $y_i \in \{-1, +1\}$,
-    the goal is to find a separating hyperplane:
-  </p>
+<svg viewBox="0 0 520 340">
+  <line x1="70" y1="280" x2="480" y2="280" stroke="#111" stroke-width="2" />
+  <line x1="70" y1="280" x2="70" y2="50" stroke="#111" stroke-width="2" />
+  <text x="480" y="310" font-size="15">θ₁</text>
+  <text x="10" y="50" font-size="15">J(θ)</text>
 
-  <div class="equation">$$f(x) = w \cdot x + b$$</div>
+  <ellipse cx="275" cy="190" rx="150" ry="80" fill="none" stroke="#93c5fd" stroke-width="2" />
+  <ellipse cx="275" cy="190" rx="100" ry="55" fill="none" stroke="#60a5fa" stroke-width="2" />
+  <ellipse cx="275" cy="190" rx="50" ry="28" fill="none" stroke="#2563eb" stroke-width="2" />
+  <circle cx="275" cy="190" r="5" fill="#dc2626" />
+</svg>
+<p class="caption">Contour representation of the MSE cost surface showing convexity and a unique minimum.</p>
 
-  <div class="note">
-    <p><strong>Primal Optimization Problem:</strong></p>
-    $$\min_{w,b} \frac{1}{2}\|w\|^2 \quad \text{subject to} \quad y_i(w\cdot x_i + b) \ge 1$$
-  </div>
+<h2>7. Gradient Descent as an Optimization Algorithm</h2>
+<p>
+Gradient descent is a first-order iterative method for minimizing differentiable functions.
+At each iteration, parameters are updated in the direction opposite to the gradient of the
+cost function, which locally indicates the steepest increase.
+</p>
 
-  <p>
-    The margin is given by $\frac{2}{\|w\|}$. Minimizing $\|w\|$ therefore maximizes the margin.
-  </p>
-</div>
+<div class="equation">$$\theta^{(t+1)} = \theta^{(t)} - \alpha \nabla J(\theta^{(t)})$$</div>
 
-<div class="card">
-  <h2>Lagrangian, Dual Form & KKT Conditions</h2>
+<p>
+The learning rate $\alpha$ controls the trade-off between convergence speed and stability.
+For convex quadratic objectives such as MSE, convergence is guaranteed when $\alpha$ lies
+within a specific range determined by the curvature of the cost surface.
+</p>
 
-  <p>
-    Introducing Lagrange multipliers $\alpha_i$, the primal problem is converted into
-    its dual form, which is easier to optimize and enables kernelization.
-  </p>
+<h2>8. Deriving the Update Rules</h2>
+<p>
+For linear regression, the gradient of the cost function can be computed analytically:
+</p>
 
-  <div class="equation">
-    $$\max_{\alpha} \sum_i \alpha_i - \frac{1}{2}\sum_{i,j} \alpha_i\alpha_j y_i y_j (x_i \cdot x_j)$$
-  </div>
+<div class="equation">$$\frac{\partial J}{\partial \theta_0} = \frac{1}{m} \sum_{i=1}^{m} (h_\theta(x_i) - y_i)$$</div>
+<div class="equation">$$\frac{\partial J}{\partial \theta_1} = \frac{1}{m} \sum_{i=1}^{m} (h_\theta(x_i) - y_i)x_i$$</div>
 
-  <p>
-    The <strong>Karush–Kuhn–Tucker (KKT)</strong> conditions identify support vectors:
-  </p>
-  <ul>
-    <li>$\alpha_i = 0$: correctly classified, outside margin</li>
-    <li>$0 < \alpha_i < C$: lies exactly on margin (support vector)</li>
-    <li>$\alpha_i = C$: inside margin or misclassified</li>
-  </ul>
-</div>
+<p>
+These expressions reveal that learning is driven by correlation between prediction error
+and the input variable.
+</p>
 
-<div class="card">
-  <h2>Soft Margin SVM</h2>
-  <p>
-    Real-world data is rarely perfectly separable. Slack variables $\xi_i$ allow
-    controlled violations of the margin constraints.
-  </p>
-  <div class="equation">
-    $$\min \frac{1}{2}\|w\|^2 + C\sum_i \xi_i$$
-  </div>
-  <p>
-    The hyperparameter <strong>C</strong> balances margin width and classification error.
-  </p>
-</div>
-
-<div class="card">
-  <h2>Kernel Trick & Non-linear Decision Boundaries</h2>
-
-  <svg viewBox="0 0 420 260">
-    <circle cx="140" cy="130" r="60" fill="none" stroke="#16a34a" stroke-width="2" />
-    <circle cx="260" cy="130" r="60" fill="none" stroke="#7c3aed" stroke-width="2" />
-    <line x1="210" y1="20" x2="210" y2="240" stroke="#e11d48" stroke-width="3" />
-    <text x="165" y="20" font-size="12">Feature Space</text>
-  </svg>
-
-  <p class="caption">
-    Non-linearly separable data in input space can become linearly separable
-    in a higher-dimensional feature space using kernel functions.
-  </p>
-
-  <p>
-    The kernel trick avoids explicit computation of the feature mapping $\phi(x)$ and
-    instead computes inner products $K(x_i, x_j)$ directly.
-  </p>
-</div>
-
-<div class="card">
-  <h2>Optimization via Sequential Minimal Optimization (SMO)</h2>
-  <p>
-    SVM training involves solving a convex quadratic programming problem. SMO decomposes
-    this problem into a series of smallest possible sub-problems, each involving only
-    two Lagrange multipliers, enabling efficient convergence.
-  </p>
-
-  <pre><code>while not converged:
-    select alpha_i, alpha_j
-    optimize pair analytically
-    update threshold b
+<h2>9. Algorithmic Implementation</h2>
+<pre><code>Initialize θ₀, θ₁
+Repeat until convergence:
+    Compute predictions hθ(x)
+    Compute errors (hθ(x) − y)
+    Compute gradients using dataset averages
+    Update parameters using learning rate α
 </code></pre>
-</div>
 
-<div class="card">
-  <h2>Implementation & Experimental Results</h2>
-  <p>
-    Experiments were conducted using Scikit-learn on both synthetic and real-world
-    datasets. Performance was evaluated using standard classification metrics.
-  </p>
+<h2>10. Reference Python Implementation</h2>
+<p>
+The following implementation mirrors the mathematical derivation exactly and is suitable
+for educational and experimental use:
+</p>
 
-  <table>
-    <tr><th>Metric</th><th>Value</th></tr>
-    <tr><td>Accuracy</td><td>94%</td></tr>
-    <tr><td>Precision</td><td>93%</td></tr>
-    <tr><td>Recall</td><td>92%</td></tr>
-    <tr><td>F1 Score</td><td>92.5%</td></tr>
-  </table>
-</div>
+<pre><code>import numpy as np
 
-<div class="card">
-  <h2>Applications of Maximum Margin SVM in Real-World Systems (Hybrid View)</h2>
+# Dataset
+X = np.array([1, 2, 3, 4, 5], dtype=float)
+y = np.array([2, 4, 5, 4, 5], dtype=float)
+m = len(X)
 
-  <p>
-    Support Vector Machines are not only theoretical constructs but are widely deployed
-    in production systems where robustness, determinism, and generalization are critical.
-    Below, we briefly outline common application domains, followed by a deep dive into
-    one representative field.
-  </p>
+# Hyperparameters
+alpha = 0.01
+theta_0, theta_1 = 0.0, 0.0
 
-  <ul>
-    <li>Biometric systems (face, fingerprint, iris recognition)</li>
-    <li>Spam detection and document classification</li>
-    <li>Financial fraud detection</li>
-    <li>Medical diagnosis and clinical decision support</li>
-    <li>Autonomous systems and sensor-based classification</li>
-  </ul>
-</div>
+# Gradient Descent
+for iteration in range(1000):
+    predictions = theta_0 + theta_1 * X
+    errors = predictions - y
 
-<div class="card">
-  <h2>Deep Dive: Face Recognition & Biometric Verification Systems</h2>
+    grad_theta_0 = (1/m) * np.sum(errors)
+    grad_theta_1 = (1/m) * np.sum(errors * X)
 
-  <p>
-    Face recognition is one of the most successful real-world applications of the
-    maximum margin principle. In biometric systems, the cost of errors is extremely
-    high: false acceptance compromises security, while false rejection degrades user
-    experience. SVMs are used to create decision boundaries with strong confidence
-    margins between identities.
-  </p>
+    theta_0 -= alpha * grad_theta_0
+    theta_1 -= alpha * grad_theta_1
+</code></pre>
 
-  <h3>Where SVM Fits in the Face Recognition Pipeline</h3>
+<h2>11. Practical and Systems-Level Considerations</h2>
+<ul>
+  <li>Feature scaling reduces ill-conditioning and accelerates convergence</li>
+  <li>Batch, stochastic, and mini-batch variants trade accuracy for speed</li>
+  <li>Closed-form solutions exist but scale poorly in high dimensions</li>
+</ul>
 
-  <svg viewBox="0 0 720 220">
-    <rect x="20" y="80" width="120" height="50" rx="10" fill="#e0f2fe" />
-    <text x="40" y="110" font-size="13">Camera Input</text>
+<h2>12. Conclusion</h2>
+<p>
+Linear regression and gradient descent together provide a mathematically transparent
+instance of learning as optimization. The geometric and algorithmic principles explored
+here recur throughout modern machine learning, making this model an essential conceptual
+benchmark rather than a historical curiosity.
+</p>
 
-    <rect x="170" y="80" width="160" height="50" rx="10" fill="#dcfce7" />
-    <text x="185" y="110" font-size="13">Face Detection</text>
+<footer>
+<p><strong>References:</strong> Gauss (1809), Bishop (2006), Hastie et al. (2009), MLMath.io</p>
+</footer>
 
-    <rect x="360" y="80" width="180" height="50" rx="10" fill="#fef9c3" />
-    <text x="375" y="110" font-size="13">Feature Extraction</text>
-
-    <rect x="580" y="80" width="120" height="50" rx="10" fill="#fee2e2" />
-    <text x="600" y="110" font-size="13">SVM Classifier</text>
-
-    <line x1="140" y1="105" x2="170" y2="105" stroke="#0f4c81" />
-    <line x1="330" y1="105" x2="360" y2="105" stroke="#0f4c81" />
-    <line x1="540" y1="105" x2="580" y2="105" stroke="#0f4c81" />
-  </svg>
-
-  <p class="caption">
-    Face recognition pipeline: SVM operates on high-level facial embeddings produced
-    by deep neural networks.
-  </p>
-
-  <h3>How the Maximum Margin Improves Security</h3>
-  <p>
-    Modern systems use deep CNNs (e.g., FaceNet, ArcFace) to convert a face image into a
-    compact numerical embedding. These embeddings cluster naturally by identity.
-    SVMs are then trained to separate these clusters with the widest possible margin.
-  </p>
-
-  <svg viewBox="0 0 420 260">
-    <!-- Cluster A -->
-    <circle cx="140" cy="130" r="55" fill="none" stroke="#16a34a" stroke-width="2" />
-    <text x="110" y="130" font-size="12">Person A</text>
-
-    <!-- Cluster B -->
-    <circle cx="280" cy="130" r="55" fill="none" stroke="#7c3aed" stroke-width="2" />
-    <text x="250" y="130" font-size="12">Person B</text>
-
-    <!-- Boundary -->
-    <line x1="210" y1="20" x2="210" y2="240" stroke="#e11d48" stroke-width="3" />
-    <line x1="195" y1="20" x2="195" y2="240" stroke="#e11d48" stroke-dasharray="6 4" />
-    <line x1="225" y1="20" x2="225" y2="240" stroke="#e11d48" stroke-dasharray="6 4" />
-  </svg>
-
-  <p class="caption">
-    Embedding space separation: the SVM learns a boundary that maximizes the distance
-    between identity clusters, reducing ambiguous decisions.
-  </p>
-
-  <h3>Why SVM Instead of Softmax?</h3>
-  <ul>
-    <li><strong>Margin-based decisions:</strong> Provides explicit confidence buffers.</li>
-    <li><strong>Better generalization:</strong> Handles unseen identities more reliably.</li>
-    <li><strong>Deterministic inference:</strong> Suitable for real-time systems.</li>
-  </ul>
-
-  <h3>Real-Time Deployment Considerations</h3>
-  <p>
-    In production, face recognition systems often process thousands of frames per
-    second. Engineers therefore deploy:
-  </p>
-  <ul>
-    <li>Linear SVMs on top of fixed embeddings</li>
-    <li>Support-vector pruning for memory efficiency</li>
-    <li>Threshold-based margin rejection for unknown faces</li>
-  </ul>
-
-  <p>
-    If the SVM output lies within the margin boundaries, the system may label the face
-    as <em>unknown</em>, improving security against spoofing and impersonation attacks.
-  </p>
-</div>
-
-<div class="card">
-  <h2>Real-Time Deployment Architecture</h2>
-
-  <p>
-    From an engineering perspective, SVM-based systems are typically deployed using a
-    clear separation between offline training and online inference.
-  </p>
-
-  <svg viewBox="0 0 520 200">
-    <rect x="10" y="60" width="120" height="50" rx="8" fill="#e0f2fe" />
-    <text x="30" y="90" font-size="13">Raw Input</text>
-
-    <rect x="150" y="60" width="160" height="50" rx="8" fill="#dcfce7" />
-    <text x="165" y="90" font-size="13">Feature Extraction</text>
-
-    <rect x="330" y="60" width="160" height="50" rx="8" fill="#fee2e2" />
-    <text x="355" y="90" font-size="13">SVM Inference</text>
-
-    <line x1="130" y1="85" x2="150" y2="85" stroke="#0f4c81" marker-end="url(#arrow)" />
-    <line x1="310" y1="85" x2="330" y2="85" stroke="#0f4c81" marker-end="url(#arrow)" />
-  </svg>
-
-  <p class="caption">
-    Typical real-time pipeline: feature extraction dominates latency; SVM inference is
-    fast and deterministic, especially for linear models.
-  </p>
-
-  <p>
-    In production, engineers often favor linear SVMs or kernel approximations to ensure
-    predictable inference times and memory usage.
-  </p>
-</div>
-
-<div class="card">
-  <h2>Why Maximum Margin Matters in Production</h2>
-  <ul>
-    <li><strong>Robustness:</strong> Small perturbations in input data rarely flip predictions.</li>
-    <li><strong>Generalization:</strong> Reduced overfitting on unseen real-world data.</li>
-    <li><strong>Safety:</strong> Margin acts as a confidence buffer in high-risk applications.</li>
-    <li><strong>Explainability:</strong> Support vectors highlight critical training examples.</li>
-  </ul>
-</div>
-
-<div class="card">
-  <h2>Practical Limitations & Engineering Trade-offs</h2>
-  <p>
-    Despite their strengths, SVMs face challenges in large-scale or low-latency systems:
-  </p>
-  <ul>
-    <li>Kernel SVMs require evaluating multiple support vectors per inference.</li>
-    <li>Memory usage grows with the number of support vectors.</li>
-    <li>Hyperparameter tuning (C, kernel parameters) is computationally expensive.</li>
-  </ul>
-
-  <p>
-    To address these issues, engineers commonly use linear SVMs, support-vector pruning,
-    or kernel approximation techniques such as Nyström methods and Random Fourier
-    Features.
-  </p>
-</div>
-
-<div class="card">
-  <h2>Conclusion</h2>
-  <p>
-    The Maximum Margin Hyperplane is not merely a theoretical concept but a powerful
-    engineering principle. By combining strong mathematical guarantees with practical
-    efficiency, Support Vector Machines remain a trusted choice for real-time and
-    safety-critical machine learning applications.
-  </p>
-</div>
 </div>
 </body>
 </html>
