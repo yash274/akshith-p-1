@@ -13,76 +13,138 @@
 
   <style>
     :root{
-      --accent:#0f4c81;
-      --accent2:#1b6fbf;
-      --bg:#f6f9fc;
+      --ink:#0b1220;
+      --ink-muted:#4b5563;
+      --accent:#1a3a6e;
+      --bg:#f8fafc;
       --card:#ffffff;
-      --text:#0f172a;
-      --muted:#475569;
+      --rule:#e5e7eb;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      font-family: "Georgia", "Times New Roman", serif;
       background:var(--bg);
-      color:var(--text);
-      line-height:1.75;
+      color:var(--ink);
+      line-height:1.85;
     }
     .container{
-      max-width:920px;
+      max-width:820px;
       margin:auto;
-      padding:16px;
+      padding:24px 18px 40px;
     }
-    header{
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      color:#fff;
-      padding:24px;
-      border-radius:16px;
+    h1,h2,h3,h4{
+      font-family:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      letter-spacing:-0.01em;
     }
-    header h1{margin:0;font-size:clamp(22px,4vw,30px)}
-    header p{margin-top:10px;font-size:15px;opacity:.95}
-    .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:16px}
-    .meta div{background:rgba(255,255,255,.18);padding:8px 10px;border-radius:8px;font-size:14px}
+    h1{
+      font-size:clamp(26px,4vw,34px);
+      margin-bottom:6px;
+    }
+    h2{
+      font-size:clamp(20px,3.5vw,24px);
+      margin-top:32px;
+      margin-bottom:12px;
+      border-bottom:1px solid var(--rule);
+      padding-bottom:6px;
+      color:var(--accent);
+    }
+    h3{
+      font-size:18px;
+      margin-top:22px;
+      margin-bottom:6px;
+      color:#1f2937;
+    }
+    p{
+      font-size:16px;
+      margin:10px 0;
+      text-align:justify;
+      hyphens:auto;
+    }
+    ul,ol{
+      margin:10px 0 10px 24px;
+    }
+    li{font-size:15px;margin:6px 0}
 
     .card{
       background:var(--card);
+      padding:22px 26px;
       margin-top:22px;
-      padding:22px;
-      border-radius:16px;
-      box-shadow:0 8px 22px rgba(15,76,129,.08);
+      border-radius:0;
+      box-shadow:none;
+      border:1px solid var(--rule);
     }
-    h2{color:var(--accent);margin-top:0;font-size:clamp(18px,3.5vw,24px)}
-    h3{color:#173a5e;margin-bottom:6px}
-    p,li{font-size:15px}
-    ul,ol{padding-left:20px}
-    .muted{color:var(--muted)}
 
-    .equation{background:#f1f5f9;padding:14px;border-radius:12px;overflow-x:auto;margin:14px 0}
-    .note{background:#fff9db;border:1px solid #f1e6b8;padding:16px;border-radius:12px;margin:16px 0}
+    .equation{
+      background:#fbfbfd;
+      border:1px solid var(--rule);
+      padding:14px;
+      margin:14px 0;
+      overflow-x:auto;
+      font-size:15px;
+    }
 
-    svg{max-width:100%;height:auto;display:block;margin:16px auto}
-    .caption{font-size:13px;color:var(--muted);text-align:center}
+    .note{
+      border-left:4px solid var(--accent);
+      background:#fbfcfe;
+      padding:14px 18px;
+      margin:18px 0;
+      font-size:15px;
+    }
 
-    pre{background:#0b1020;color:#e6f0ff;padding:16px;border-radius:14px;overflow-x:auto;font-size:13px}
-    table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
-    th,td{border:1px solid #e4ebf4;padding:8px;text-align:left}
+    svg{
+      display:block;
+      margin:22px auto 10px;
+      max-width:100%;
+      height:auto;
+    }
 
-    footer{margin:32px 0 12px;text-align:center;font-weight:600}
-  </style>
+    .caption{
+      font-size:13px;
+      color:var(--ink-muted);
+      text-align:center;
+      margin-bottom:18px;
+    }
+
+    pre{
+      background:#0b1220;
+      color:#e5e7eb;
+      padding:16px;
+      font-size:14px;
+      overflow-x:auto;
+      margin:16px 0;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin:16px 0;
+      font-size:15px;
+    }
+    th,td{
+      border:1px solid var(--rule);
+      padding:8px 10px;
+      text-align:left;
+    }
+    th{
+      background:#f1f5f9;
+      font-weight:600;
+    }
+
+    footer{
+      margin-top:36px;
+      padding-top:12px;
+      border-top:1px solid var(--rule);
+      font-size:14px;
+      color:var(--ink-muted);
+      text-align:center;
+    }
+</style>
 </head>
 <body>
 <div class="container">
 
-<header>
-  <h1>Maximum Margin Hyperplane in Support Vector Machine</h1>
-  <p>Advanced theoretical derivation, geometric intuition, kernel methods, optimization strategy, and practical implementation.</p>
-  <div class="meta">
-    <div><strong>Student Name:</strong> ____________________</div>
-    <div><strong>Class:</strong> ____________________</div>
-    <div><strong>Institution:</strong> ____________________</div>
-    <div><strong>Faculty Mentor:</strong> ____________________</div>
-  </div>
-</header>
+
 
 <div class="card">
   <h2>Abstract</h2>
@@ -266,28 +328,181 @@
 </div>
 
 <div class="card">
-  <h2>Conclusion</h2>
+  <h2>Applications of Maximum Margin SVM in Real-World Systems (Hybrid View)</h2>
+
   <p>
-    The Maximum Margin Hyperplane is the defining strength of Support Vector Machines.
-    Through a combination of strong theoretical foundations and efficient optimization,
-    SVMs provide robust performance across a wide range of classification tasks.
+    Support Vector Machines are not only theoretical constructs but are widely deployed
+    in production systems where robustness, determinism, and generalization are critical.
+    Below, we briefly outline common application domains, followed by a deep dive into
+    one representative field.
+  </p>
+
+  <ul>
+    <li>Biometric systems (face, fingerprint, iris recognition)</li>
+    <li>Spam detection and document classification</li>
+    <li>Financial fraud detection</li>
+    <li>Medical diagnosis and clinical decision support</li>
+    <li>Autonomous systems and sensor-based classification</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>Deep Dive: Face Recognition & Biometric Verification Systems</h2>
+
+  <p>
+    Face recognition is one of the most successful real-world applications of the
+    maximum margin principle. In biometric systems, the cost of errors is extremely
+    high: false acceptance compromises security, while false rejection degrades user
+    experience. SVMs are used to create decision boundaries with strong confidence
+    margins between identities.
+  </p>
+
+  <h3>Where SVM Fits in the Face Recognition Pipeline</h3>
+
+  <svg viewBox="0 0 720 220">
+    <rect x="20" y="80" width="120" height="50" rx="10" fill="#e0f2fe" />
+    <text x="40" y="110" font-size="13">Camera Input</text>
+
+    <rect x="170" y="80" width="160" height="50" rx="10" fill="#dcfce7" />
+    <text x="185" y="110" font-size="13">Face Detection</text>
+
+    <rect x="360" y="80" width="180" height="50" rx="10" fill="#fef9c3" />
+    <text x="375" y="110" font-size="13">Feature Extraction</text>
+
+    <rect x="580" y="80" width="120" height="50" rx="10" fill="#fee2e2" />
+    <text x="600" y="110" font-size="13">SVM Classifier</text>
+
+    <line x1="140" y1="105" x2="170" y2="105" stroke="#0f4c81" />
+    <line x1="330" y1="105" x2="360" y2="105" stroke="#0f4c81" />
+    <line x1="540" y1="105" x2="580" y2="105" stroke="#0f4c81" />
+  </svg>
+
+  <p class="caption">
+    Face recognition pipeline: SVM operates on high-level facial embeddings produced
+    by deep neural networks.
+  </p>
+
+  <h3>How the Maximum Margin Improves Security</h3>
+  <p>
+    Modern systems use deep CNNs (e.g., FaceNet, ArcFace) to convert a face image into a
+    compact numerical embedding. These embeddings cluster naturally by identity.
+    SVMs are then trained to separate these clusters with the widest possible margin.
+  </p>
+
+  <svg viewBox="0 0 420 260">
+    <!-- Cluster A -->
+    <circle cx="140" cy="130" r="55" fill="none" stroke="#16a34a" stroke-width="2" />
+    <text x="110" y="130" font-size="12">Person A</text>
+
+    <!-- Cluster B -->
+    <circle cx="280" cy="130" r="55" fill="none" stroke="#7c3aed" stroke-width="2" />
+    <text x="250" y="130" font-size="12">Person B</text>
+
+    <!-- Boundary -->
+    <line x1="210" y1="20" x2="210" y2="240" stroke="#e11d48" stroke-width="3" />
+    <line x1="195" y1="20" x2="195" y2="240" stroke="#e11d48" stroke-dasharray="6 4" />
+    <line x1="225" y1="20" x2="225" y2="240" stroke="#e11d48" stroke-dasharray="6 4" />
+  </svg>
+
+  <p class="caption">
+    Embedding space separation: the SVM learns a boundary that maximizes the distance
+    between identity clusters, reducing ambiguous decisions.
+  </p>
+
+  <h3>Why SVM Instead of Softmax?</h3>
+  <ul>
+    <li><strong>Margin-based decisions:</strong> Provides explicit confidence buffers.</li>
+    <li><strong>Better generalization:</strong> Handles unseen identities more reliably.</li>
+    <li><strong>Deterministic inference:</strong> Suitable for real-time systems.</li>
+  </ul>
+
+  <h3>Real-Time Deployment Considerations</h3>
+  <p>
+    In production, face recognition systems often process thousands of frames per
+    second. Engineers therefore deploy:
+  </p>
+  <ul>
+    <li>Linear SVMs on top of fixed embeddings</li>
+    <li>Support-vector pruning for memory efficiency</li>
+    <li>Threshold-based margin rejection for unknown faces</li>
+  </ul>
+
+  <p>
+    If the SVM output lies within the margin boundaries, the system may label the face
+    as <em>unknown</em>, improving security against spoofing and impersonation attacks.
   </p>
 </div>
 
 <div class="card">
-  <h2>References</h2>
+  <h2>Real-Time Deployment Architecture</h2>
+
+  <p>
+    From an engineering perspective, SVM-based systems are typically deployed using a
+    clear separation between offline training and online inference.
+  </p>
+
+  <svg viewBox="0 0 520 200">
+    <rect x="10" y="60" width="120" height="50" rx="8" fill="#e0f2fe" />
+    <text x="30" y="90" font-size="13">Raw Input</text>
+
+    <rect x="150" y="60" width="160" height="50" rx="8" fill="#dcfce7" />
+    <text x="165" y="90" font-size="13">Feature Extraction</text>
+
+    <rect x="330" y="60" width="160" height="50" rx="8" fill="#fee2e2" />
+    <text x="355" y="90" font-size="13">SVM Inference</text>
+
+    <line x1="130" y1="85" x2="150" y2="85" stroke="#0f4c81" marker-end="url(#arrow)" />
+    <line x1="310" y1="85" x2="330" y2="85" stroke="#0f4c81" marker-end="url(#arrow)" />
+  </svg>
+
+  <p class="caption">
+    Typical real-time pipeline: feature extraction dominates latency; SVM inference is
+    fast and deterministic, especially for linear models.
+  </p>
+
+  <p>
+    In production, engineers often favor linear SVMs or kernel approximations to ensure
+    predictable inference times and memory usage.
+  </p>
+</div>
+
+<div class="card">
+  <h2>Why Maximum Margin Matters in Production</h2>
   <ul>
-    <li>Cortes, C., Vapnik, V. (1995). Support Vector Networks.</li>
-    <li>Platt, J. (1998). Sequential Minimal Optimization.</li>
-    <li>Burges, C. (1998). A Tutorial on Support Vector Machines.</li>
-    <li>Ankit Kumar. Math Behind Support Vector Machine.</li>
+    <li><strong>Robustness:</strong> Small perturbations in input data rarely flip predictions.</li>
+    <li><strong>Generalization:</strong> Reduced overfitting on unseen real-world data.</li>
+    <li><strong>Safety:</strong> Margin acts as a confidence buffer in high-risk applications.</li>
+    <li><strong>Explainability:</strong> Support vectors highlight critical training examples.</li>
   </ul>
 </div>
 
-<footer>
-  Submission Date: <strong>Nov 12, 2025</strong>
-</footer>
+<div class="card">
+  <h2>Practical Limitations & Engineering Trade-offs</h2>
+  <p>
+    Despite their strengths, SVMs face challenges in large-scale or low-latency systems:
+  </p>
+  <ul>
+    <li>Kernel SVMs require evaluating multiple support vectors per inference.</li>
+    <li>Memory usage grows with the number of support vectors.</li>
+    <li>Hyperparameter tuning (C, kernel parameters) is computationally expensive.</li>
+  </ul>
 
+  <p>
+    To address these issues, engineers commonly use linear SVMs, support-vector pruning,
+    or kernel approximation techniques such as Nyström methods and Random Fourier
+    Features.
+  </p>
+</div>
+
+<div class="card">
+  <h2>Conclusion</h2>
+  <p>
+    The Maximum Margin Hyperplane is not merely a theoretical concept but a powerful
+    engineering principle. By combining strong mathematical guarantees with practical
+    efficiency, Support Vector Machines remain a trusted choice for real-time and
+    safety-critical machine learning applications.
+  </p>
+</div>
 </div>
 </body>
 </html>
